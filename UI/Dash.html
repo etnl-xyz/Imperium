@@ -1,9 +1,289 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMPERIUM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0a0a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #particleCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: #0a0a1a;
+        }
+
+        .container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .acrylic-panel {
+            backdrop-filter: blur(40px);
+            background: rgba(10, 10, 26, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 80px 120px;
+            width: 80%;
+            max-width: 1000px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            animation: panelGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes panelGlow {
+            0%, 100% {
+                box-shadow: 
+                    0 8px 32px rgba(0, 0, 0, 0.5),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+                    0 0 20px rgba(100, 200, 255, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 8px 32px rgba(0, 0, 0, 0.5),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+                    0 0 40px rgba(100, 200, 255, 0.2);
+            }
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #64c8ff 0%, #b48cff 25%, #64c8ff 50%, #b48cff 75%, #64c8ff 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGradientFlow 4s ease-in-out infinite, titleGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(100, 200, 255, 0.4)) drop-shadow(0 0 30px rgba(180, 140, 255, 0.3));
+        }
+
+        @keyframes titleGradientFlow {
+            0% {
+                background-position: 0% center;
+            }
+            50% {
+                background-position: 100% center;
+            }
+            100% {
+                background-position: 0% center;
+            }
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 15px rgba(100, 200, 255, 0.4)) drop-shadow(0 0 30px rgba(180, 140, 255, 0.3));
+                text-shadow: 0 0 20px rgba(100, 200, 255, 0.2), 0 0 40px rgba(180, 140, 255, 0.15);
+            }
+            50% {
+                filter: drop-shadow(0 0 25px rgba(100, 200, 255, 0.7)) drop-shadow(0 0 50px rgba(180, 140, 255, 0.5));
+                text-shadow: 0 0 30px rgba(100, 200, 255, 0.4), 0 0 60px rgba(180, 140, 255, 0.3);
+            }
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 20px;
+            background: linear-gradient(90deg, rgba(100, 200, 255, 0.9) 0%, rgba(180, 140, 255, 0.9) 50%, rgba(100, 200, 255, 0.9) 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: subtitleGradient 3.5s ease-in-out infinite, subtitleGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.3)) drop-shadow(0 0 20px rgba(180, 140, 255, 0.2));
+        }
+
+        @keyframes subtitleGradient {
+            0% {
+                background-position: 0% center;
+            }
+            50% {
+                background-position: 100% center;
+            }
+            100% {
+                background-position: 0% center;
+            }
+        }
+
+        @keyframes subtitleGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.3)) drop-shadow(0 0 20px rgba(180, 140, 255, 0.2));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(100, 200, 255, 0.6)) drop-shadow(0 0 35px rgba(180, 140, 255, 0.4));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .acrylic-panel {
+                padding: 60px 80px;
+                width: 85%;
+            }
+
+            .title {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .acrylic-panel {
+                padding: 40px 40px;
+                width: 90%;
+            }
+
+            .title {
+                font-size: 1.8rem;
+                letter-spacing: 3px;
+            }
+
+            .subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
+                margin-top: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-Content
+    <canvas id="particleCanvas"></canvas>
+    
+    <div class="container">
+        <div class="acrylic-panel">
+            <div style="text-align: center;">
+                <h1 class="title">IMPERIUM</h1>
+                <p class="subtitle">Eternal Softworks™</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.15;
+                this.vy = (Math.random() - 0.5) * 0.15;
+                this.life = Math.random() * 500 + 500;
+                this.maxLife = this.life;
+                this.size = Math.random() * 1.5 + 0.3;
+                this.hue = Math.random() > 0.5 ? 200 : 270;
+                this.lightness = 40 + Math.random() * 20;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+
+                // Wrap around edges
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+
+                if (this.life <= 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                const alpha = Math.max(0, this.life / this.maxLife);
+                
+                // Draw outer glow - subtle
+                const glowSize = this.size * 6;
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, glowSize
+                );
+                
+                gradient.addColorStop(0, `hsla(${this.hue}, 80%, ${this.lightness}%, ${alpha * 0.2})`);
+                gradient.addColorStop(0.7, `hsla(${this.hue}, 80%, ${this.lightness}%, ${alpha * 0.05})`);
+                gradient.addColorStop(1, `hsla(${this.hue}, 80%, ${this.lightness}%, 0)`);
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, glowSize, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw core - very subtle
+                ctx.fillStyle = `hsla(${this.hue}, 70%, ${this.lightness}%, ${alpha * 0.6})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Create particle system
+        const particles = [];
+        const particleCount = 40;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation loop
+        function animate() {
+            // Fully clear canvas each frame for clean particles
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update and draw all particles
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animate();
+    </script>
 </body>
 </html>
